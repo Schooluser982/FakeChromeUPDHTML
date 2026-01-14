@@ -1,7 +1,7 @@
 <html lang="en"><head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chrome OS Update Simulation</title>
+    <title>Chrome OS Update</title>
     <style>
         :root {
             --spinner-background-color: #0000;
@@ -10,23 +10,28 @@
             --number-of-sectors: 12;
             --spinner-width: 9.5px;
         }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: none; /* Hide cursor */
+        }
         body {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Full height of the viewport */
+            height: 100vh;
             margin: 0;
-            background-color: #1f1f1f; /* Set the same gray background */
+            background-color: #1f1f1f;
             font-family: Arial, sans-serif;
         }
         .update-screen {
             text-align: center;
-            background-color: #1f1f1f; /* Dark background for the update screen */
+            background-color: #1f1f1f;
             color: white;
             border-radius: 10px;
             padding: 20px;
-            width: 400px; /* Set a fixed width for the update screen */
-            /* Removed box-shadow */
+            width: 400px;
         }
         .chrome-os-main-section {
             position: relative;
@@ -82,7 +87,7 @@
         }
         .chrome-os-main-text {
             font-size: 16px;
-            color: #fff; /* White text for better visibility */
+            color: #fff;
         }
     </style>
 </head>
@@ -104,5 +109,32 @@
         </div>
         <span class="chrome-os-bottom-text"></span>
     </div>
+
+    <!-- Fullscreen + Pointer Lock -->
+    <script>
+        function goFullscreenAndLock() {
+            const elem = document.documentElement;
+
+            // Fullscreen
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            }
+
+            // Pointer lock
+            if (elem.requestPointerLock) {
+                elem.requestPointerLock();
+            }
+        }
+
+        // First click triggers both
+        document.addEventListener("click", goFullscreenAndLock);
+
+        // If pointer lock is lost, clicking again will re-lock
+        document.addEventListener("pointerlockchange", () => {
+            if (document.pointerLockElement !== document.documentElement) {
+                document.addEventListener("click", goFullscreenAndLock, { once: true });
+            }
+        });
+    </script>
 
 </body></html>
